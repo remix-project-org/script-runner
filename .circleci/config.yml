@@ -22,7 +22,7 @@ jobs:
             - node_modules
       - run:
           name: Build Project
-          command: yarn build
+          command: NODE_OPTIONS="--max-old-space-size=4096" yarn build
   test:
     docker:
       - image: cimg/node:20.0.0-browsers
