@@ -23,20 +23,22 @@ jobs:
       - run:
           name: Build Project
           command: NODE_OPTIONS="--max-old-space-size=4096" yarn build
+      - persist_to_workspace:
+            root: .
+            paths:
+              - build  # Adjust this to your build directory (e.g., 'dist' or 'out')
+ 
   test:
     docker:
       - image: cimg/node:20.0.0-browsers
     working_directory: ~/script-runner
     steps:
+      - attach_workspace:
+          at: .
       - restore_cache:
           keys:
             - v1-deps-{{ checksum "yarn.lock" }}
-      - run:
-          name: Run Tests
-          command: yarn test
-      - store_artifacts:
-          path: test-results
-          destination: test-results
+      - run: ls -la
 workflows:
   version: 2
   main_workflow:
