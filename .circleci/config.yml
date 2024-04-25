@@ -1,4 +1,3 @@
-
 version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.4
@@ -11,14 +10,38 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - v1-deps-{{ checksum "yarn.lock" }}
             - v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn
+            - v1-deps-
+      - run:
+          name: Install Dependencies
+          command: yarn
       - save_cache:
           key: v1-deps-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-      - run: yarn build
-
+      - run:
+          name: Build Project
+          command: yarn build
+  test:
+    docker:
+      - image: cimg/node:20.0.0-browsers
+    working_directory: ~/script-runner
+    steps:
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run Tests
+          command: yarn test
+      - store_artifacts:
+          path: test-results
+          destination: test-results
 workflows:
-  jobs:
-    - build
+  version: 2
+  main_workflow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
