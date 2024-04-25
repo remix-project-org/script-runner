@@ -35,10 +35,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - restore_cache:
-          keys:
-            - v1-deps-{{ checksum "yarn.lock" }}
+
+      - run: git clone https://github.com/ethereum/remix-live
       - run: ls -la
+      - run: cd remix-live
+      - run: npx http-server -p 8080
 workflows:
   version: 2
   main_workflow:
