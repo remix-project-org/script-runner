@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "target": "ES2015",                  // ECMAScript version
+      "module": "CommonJS",                // Module system
+      "strict": false,                     // Disable strict mode to allow implicit any
+      "noImplicitAny": false,              // Allow implicit 'any' types
+      "strictNullChecks": false,            // Enable strict null checks
+      "strictFunctionTypes": false,         // Enable strict checking on function types
+      "strictPropertyInitialization": false, // Strict property initialization rules
+      "outDir": "./dist",                  // Output directory for compiled files
+      "rootDir": "./src",                  // Root directory for input files
+      "sourceMap": false,                   // Generate source maps
+      "esModuleInterop": true, 
+      "moduleResolution": "Node",            // Enable interoperability with ES modules
+      "forceConsistentCasingInFileNames": true, // Force consistent casing in file names
+      "resolveJsonModule": true,           // Support JSON module imports
+      "typeRoots": ["src/types/**/*.d.ts", "./node_modules/@types"], // Include custom types and global types
+      "types": ["node", "nightwatch"],          // Add Nightwatch to available global types
+      "skipLibCheck": true                 // Skip type checking of declaration files
+    },
+    "include": ["src/**/*.ts"],           // Include all TypeScript files in the 'src' directory
+    "exclude": ["node_modules", "dist"]   // Exclude 'node_modules' and output directory
+  }
+  
