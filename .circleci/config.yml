@@ -54,8 +54,10 @@ jobs:
       - image: cimg/node:20.0.0-browsers
     working_directory: ~/script-runner
     steps:
-      - build-script-runner  # Reuse the command
-
+      - run:
+          name: Deploy
+          command: |
+            ./ci/deploy.sh
 workflows:
   version: 2
   main_workflow:
