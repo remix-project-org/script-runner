@@ -27,6 +27,7 @@ import * as hhEtherMethods from './hardhat-ethers/methods'
 import * as ffjavascript from 'ffjavascript'
 import * as sindri from 'sindri'
 import { isBigInt } from 'web3-validator'
+import * as zksyncEthers from 'zksync-ethers'
 const chai = require('chai')
 chai.use(waffleChai)
 
