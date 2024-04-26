@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.4
 jobs:
-  build:
+  test:
     docker:
       - image: cimg/node:20.0.0-browsers
     working_directory: ~/script-runner
@@ -23,28 +23,15 @@ jobs:
       - run:
           name: Build Project
           command: NODE_OPTIONS="--max-old-space-size=4096" yarn build
-      - persist_to_workspace:
-            root: .
-            paths:
-              - build  # Adjust this to your build directory (e.g., 'dist' or 'out')
- 
-  test:
-    docker:
-      - image: cimg/node:20.0.0-browsers
-    working_directory: ~/script-runner
-    steps:
-      - attach_workspace:
-          at: .
+      - run:
+          name: test
+          command: |
+           cd test
+           yarn install
+           yarn test
 
-      - run: git clone https://github.com/ethereum/remix-live
-      - run: ls -la
-      - run: cd remix-live
-      - run: npx http-server -p 8080
 workflows:
   version: 2
   main_workflow:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      - test
