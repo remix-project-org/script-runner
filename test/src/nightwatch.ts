@@ -1,5 +1,6 @@
 module.exports = {
   src_folders: ['dist/tests'],  // Location of your test files
+  output_folder: './reports/tests',
   custom_commands_path: ['dist/commands'],
   webdriver: {
     start_process: true,  // Start ChromeDriver process
