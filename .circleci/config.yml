@@ -1,0 +1,71 @@
+version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@1.4.4
+
+commands:
+  build-script-runner:
+    steps:  # This is required to define the steps within the command
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "yarn.lock" }}
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-deps-
+      - run:
+          name: Install Dependencies
+          command: yarn
+      - save_cache:
+          key: v1-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: Build Project
+          command: NODE_OPTIONS="--max-old-space-size=4096" yarn build
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:20.0.0-browsers
+    working_directory: ~/script-runner
+    steps:
+      - browser-tools/install-browser-tools:
+          install-firefox: false
+          install-chrome: true
+          install-chromedriver: false
+          install-geckodriver: false
+      - build-script-runner  # Call the custom command here
+      - run:
+          name: Test
+          command: |
+            cd test
+            yarn install
+            yarn test
+      - store_test_results:
+          path: ./test/reports/tests
+      - store_artifacts:
+          path: ./test/reports/screenshots
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "build"
+
+  deploy:
+    docker:
+      - image: cimg/node:20.0.0-browsers
+    working_directory: ~/script-runner
+    steps:
+      - run:
+          name: Deploy
+          command: |
+            ./ci/deploy.sh
+workflows:
+  version: 2
+  main_workflow:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master

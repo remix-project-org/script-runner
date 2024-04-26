@@ -1,0 +1,20 @@
+{
+  "name": "scriptrunner-e2e",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "install": "yarn install_webdriver && yarn install_remix_live",
+    "install_webdriver": "bash ./install-webdriver.sh",
+    "install_remix_live": "git clone https://github.com/ethereum/remix-live.git",
+    "serve_remix_live": "npx http-server ./remix-live",
+    "serve_script_runner": "npx http-server -p 3000 ../build",
+    "test": "./run_tests.sh",
+    "build:e2e": "rm -rf dist && tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/nightwatch": "^2.3.23",
+    "nightwatch": "2.3",
+    "typescript": "^5.4.5"
+  }
+}
