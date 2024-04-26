@@ -7,7 +7,7 @@ git checkout master -- build/
 git checkout master -- package.json
 git checkout master -- webpack.config.js
 git checkout master -- src/
-yarn && yarn build
+yarn && NODE_OPTIONS="--max-old-space-size=4096" yarn build
 cp -R build/* .
 git add .
 git commit -m "Built website from {$SHA}."
