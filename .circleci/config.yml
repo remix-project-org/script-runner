@@ -35,9 +35,9 @@ jobs:
            yarn install
            yarn test
       - store_test_results:
-          path: ./reports/tests
+          path: ./test/reports/tests
       - store_artifacts:
-          path: ./reports/screenshots
+          path: ./test/reports/screenshots
 
 workflows:
   version: 2
