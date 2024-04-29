@@ -4,7 +4,7 @@ node_modules
 # Ignore everything in the build directory
 build/*
 
-# But not .was or .html files in the build directory
+# But not .wasm or .html files in the build directory
 !build/*.wasm
 !build/*.html
 
