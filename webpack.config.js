@@ -1,5 +1,7 @@
 const path = require('path');
 const webpack = require('webpack')
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = {
   entry: './src/script-runner.js',
@@ -7,6 +9,9 @@ module.exports = {
   output: {
     filename: './script-runner.js',
     path: path.resolve(__dirname, 'build')
+  },
+  externals: {
+    'ganache': 'var {}'
   },
   resolve: {
     fallback: {
@@ -35,6 +40,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       Buffer: ["buffer", "Buffer"],
       process: 'process/browser',
-    })
+    }),
+    //new BundleAnalyzerPlugin()
   ]
 };
