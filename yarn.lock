@@ -12088,6 +12088,11 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
+zksync-ethers@^6.7.1:
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/zksync-ethers/-/zksync-ethers-6.7.1.tgz#ebfaa48b8467d6ee36f28e3f1e32f432ea953ac5"
+  integrity sha512-JBYxQLkA/jCFvZwjtKBecnlMy+0Mw3/q9xXjTfM4R6qspl/tKhCiKney61Q6hDkopm7x8SEq1gzH8HwzfZHHgw==
+
 zod@^3.21.4, zod@^3.22.4:
   version "3.22.4"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
