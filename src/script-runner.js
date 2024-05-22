@@ -1,6 +1,5 @@
 'use strict'
 import "@babel/polyfill"
-import * as ts from "typescript";
 import { createClient } from '@remixproject/plugin-iframe'
 import { PluginClient } from '@remixproject/plugin'
 import * as ethersJs from 'ethers' // eslint-disable-line
@@ -72,6 +71,7 @@ class CodeExecutor extends PluginClient {
     const fromPath = paths.join('/') // get current execcution context path
     if (script) {
       try {
+        const ts = await import('typescript');
         script = ts.transpileModule(script, { moduleName: filePath, filePath,
         compilerOptions: {
          target: ts.ScriptTarget.ES2015,
