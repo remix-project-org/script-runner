@@ -6,7 +6,7 @@
   "scripts": {
     "install": "yarn install_webdriver && yarn install_remix_live",
     "install_webdriver": "bash ./install-webdriver.sh",
-    "install_remix_live": "git clone https://github.com/ethereum/remix-live.git",
+    "install_remix_live": "git clone https://github.com/ethereum/remix-live.git || (cd remix-live && git pull)",
     "serve_remix_live": "npx http-server ./remix-live",
     "serve_script_runner": "npx http-server -p 3000 ../build",
     "test": "./run_tests.sh",
