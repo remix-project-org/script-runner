@@ -11,6 +11,7 @@ module.exports = {
   },
   'Should exec a web3 TS file': function (browser: NightwatchBrowser) {
     browser
+        .pause()
         .waitForElementVisible('*[data-id="treeViewLitreeViewItemcontracts"]')
         .click('*[data-id="treeViewLitreeViewItemcontracts"]')
         .waitForElementVisible('*[data-id="treeViewLitreeViewItemcontracts/1_Storage.sol"]')
