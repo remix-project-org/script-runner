@@ -25,7 +25,9 @@ import * as path from 'path'
 import * as hhEtherMethods from './hardhat-ethers/methods'
 import * as ffjavascript from 'ffjavascript'
 import * as sindri from 'sindri'
+import * as zksyncEthers from 'zksync-ethers'
 import { isBigInt } from 'web3-validator'
+
 const chai = require('chai')
 chai.use(waffleChai)
 
@@ -51,6 +53,8 @@ window['@ethereumjs/util'] = ethereumjsUtil
 window["ffjavascript"] = ffjavascript
 
 window["sindri"] = sindri
+
+window["zksync-ethers"] = zksyncEthers
 
 const scriptReturns = {} // keep track of modules exported values
 const fileContents = {} // keep track of file content
