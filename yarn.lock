@@ -5571,7 +5571,7 @@ ethereumjs-wallet@0.6.5:
     utf8 "^3.0.0"
     uuid "^3.3.2"
 
-ethers@5.7.2, ethers@^5.7.2:
+ethers@5.7.2, ethers@^5, ethers@^5.7.2, ethers@~5.7.0:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
@@ -5607,7 +5607,7 @@ ethers@5.7.2, ethers@^5.7.2:
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
 
-ethers@^5.4.7, ethers@^5.5.2:
+ethers@^5.5.2:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.1.tgz#48c83a44900b5f006eb2f65d3ba6277047fd4f33"
   integrity sha512-5krze4dRLITX7FpU8J4WscXqADiKmyeNlylmmDLbS95DaZpBhDe2YSwRQwKXWNyXcox7a3gBgm/MkGXV1O1S/Q==
@@ -12087,6 +12087,13 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zksync-ethers@^5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/zksync-ethers/-/zksync-ethers-5.7.2.tgz#e965a9926e6f8168963ab565dd6ad0d38c4f7f18"
+  integrity sha512-D+wn4nkGixUOek9ZsVvIZ/MHponQ5xvw74FSbDJDv6SLCI4LZALOAc8lF3b1ml8nOkpeE2pGV0VKmHTSquRNJg==
+  dependencies:
+    ethers "~5.7.0"
 
 zod@^3.21.4, zod@^3.22.4:
   version "3.22.4"
