@@ -1,10 +1,8 @@
 const path = require('path');
-const webpack = require('webpack')
-//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/script-runner.js',
+  entry: './src/script-runner.ts', // Update the entry point to your TypeScript file
   target: ['web'],
   output: {
     filename: './script-runner.js',
@@ -14,6 +12,7 @@ module.exports = {
     'ganache': 'var {}'
   },
   resolve: {
+    extensions: ['.ts', '.tsx', '.js'], // Add '.ts' and '.tsx' as resolvable extensions
     fallback: {
       assert: false,
       path: require.resolve("path-browserify"),
@@ -32,6 +31,15 @@ module.exports = {
     alias: {
       process: 'process/browser',
     }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/, // Use a regex to test for .ts and .tsx files
+        use: 'ts-loader', // Use ts-loader to transpile TypeScript files
+        exclude: /node_modules/,
+      },
+    ],
   },
   experiments: {
     syncWebAssembly: true

@@ -9,7 +9,7 @@ import Web3 from 'web3'
 import { waffleChai } from "@ethereum-waffle/chai";
 import * as starknet from 'starknet'
 import * as zokratesJs from 'zokrates-js';
-import * as circomlibjs from 'circomlibjs';
+const circomlibjs = require('circomlibjs');
 const snarkjs = require('snarkjs');
 import * as zkkitIncrementalMerkleTree from '@zk-kit/incremental-merkle-tree';
 import * as semaphoreProtocolProof from '@semaphore-protocol/proof'
@@ -22,17 +22,34 @@ import * as spartanECDSA from '@personaelabs/spartan-ecdsa'
 import * as ethereumjsUtil from '@ethereumjs/util'
 import './runWithMocha'
 import * as path from 'path'
-import * as hhEtherMethods from './hardhat-ethers/methods'
-import * as ffjavascript from 'ffjavascript'
+// import * as hhEtherMethods from './hardhat-ethers/methods'
+const ffjavascript = require('ffjavascript')
 import * as sindri from 'sindri'
 import { isBigInt } from 'web3-validator'
+import { TranspileOutput } from "typescript"
 const chai = require('chai')
-chai.use(waffleChai)
+chai.use(waffleChai);
 
-window._starknet = starknet
-window.chai = chai
-window.ethers = ethersJs
-window.multihashes = multihash
+declare global {
+  interface Window {
+    [key: string]: any;
+    _starknet: any
+    chai: any
+    ethers: any
+    multihashes: any
+    snarkjs: any
+    circomlibjs: any
+    ffjavascript: any
+    sindri: any
+    remix: any
+    require: any
+  }
+}
+
+window._starknet = starknet;
+window.chai = chai;
+window.ethers = ethersJs;
+window.multihashes = multihash;
 window['zokrates-js'] = zokratesJs
 window['snarkjs'] = snarkjs
 window['circomlibjs'] = circomlibjs
@@ -52,9 +69,9 @@ window["ffjavascript"] = ffjavascript
 
 window["sindri"] = sindri
 
-const scriptReturns = {} // keep track of modules exported values
-const fileContents = {} // keep track of file content
-window.require = (module) => {
+const scriptReturns:  { [key: string]: any } = {} // keep track of modules exported values
+const fileContents: { [key: string]: any } = {} // keep track of file content
+window.require = (module: string) => {
   if (module === 'web3') return web3Js
   if (window[module]) return window[module] // library
   if (window['_' + module]) return window['_' + module] // library
@@ -64,7 +81,7 @@ window.require = (module) => {
 }
 
 class CodeExecutor extends PluginClient {
-  async execute (script, filePath) {
+  async execute (script: string | undefined, filePath: string) {
     filePath = filePath || 'scripts/script.ts'
     const paths = filePath.split('/')
     paths.pop()
@@ -72,13 +89,13 @@ class CodeExecutor extends PluginClient {
     if (script) {
       try {
         const ts = await import('typescript');
-        script = ts.transpileModule(script, { moduleName: filePath, filePath,
+        const transpiled: TranspileOutput = ts.transpileModule(script, { moduleName: filePath, fileName: filePath,
         compilerOptions: {
          target: ts.ScriptTarget.ES2015,
          module: ts.ModuleKind.CommonJS,
          esModuleInterop: true,  
         }});
-        script = script.outputText;
+        script = transpiled.outputText;
         // extract all the "require", execute them and store the returned values.
         const regexp = /require\((.*?)\)/g
         const array = [...script.matchAll(regexp)];
@@ -104,12 +121,9 @@ class CodeExecutor extends PluginClient {
                   ${script};
                   return exports || module.exports`
         const returns = (new Function(script))()
-        if (mocha.suite && ((mocha.suite.suites && mocha.suite.suites.length) || (mocha.suite.tests && mocha.suite.tests.length))) {
-          console.log(`RUNS ${filePath}....`)
-          mocha.run()
-        } 
+
         return returns
-      } catch (e) {
+      } catch (e: any) {
         this.emit('error', {
           data: [e.message]
         })
@@ -117,13 +131,13 @@ class CodeExecutor extends PluginClient {
     }
   }
 
-  async _resolveFile (fileName) {
-    if (await this.call('fileManager', 'exists', fileName)) return await this.call('fileManager', 'readFile', fileName)
-    if (await this.call('fileManager', 'exists', fileName + '.ts')) return await this.call('fileManager', 'readFile', fileName + '.ts')
-    if (await this.call('fileManager', 'exists', fileName + '.js')) return await this.call('fileManager', 'readFile', fileName + '.js')
+  async _resolveFile (fileName: string) {
+    if (await this.call('fileManager' as any, 'exists', fileName)) return await this.call('fileManager', 'readFile', fileName)
+    if (await this.call('fileManager' as any, 'exists', fileName + '.ts')) return await this.call('fileManager', 'readFile', fileName + '.ts')
+    if (await this.call('fileManager' as any, 'exists', fileName + '.js')) return await this.call('fileManager', 'readFile', fileName + '.js')
   }
 
-  async executeFile (fileName) {
+  async executeFile (fileName: string) {
     try {
       if (require(fileName)) return require(fileName)
     } catch (e) {}
@@ -137,50 +151,49 @@ window.remix = new CodeExecutor()
 createClient(window.remix)
 
 window.web3Provider = {
-  sendAsync(payload, callback) {
+  sendAsync(payload: any, callback: any) {
     window.remix.call('web3Provider', 'sendAsync', payload)
-      .then(result => callback(null, result))
-      .catch(e => callback(e))
+      .then((result: any) => callback(null, result))
+      .catch((e: any) => callback(e))
   }
 }
-window.provider = web3Provider
-window.ethereum = web3Provider
+window.provider = window.web3Provider
+window.ethereum = window.web3Provider
 
 window.web3 = new Web3(window.web3Provider)
 
 // Support hardhat-ethers, See: https://hardhat.org/plugins/nomiclabs-hardhat-ethers.html
 const { ethers } = ethersJs
-ethers.provider = new ethers.providers.Web3Provider(window.web3Provider)
-window.hardhat = { ethers }
-for(const method in hhEtherMethods) Object.defineProperty(window.hardhat.ethers, method, { value: hhEtherMethods[method]})
+//ethers.provider = new ethers.providers.Web3Provider(window.web3Provider)
+//for(const method in hhEtherMethods) Object.defineProperty(window.hardhat.ethers, method, { value: hhEtherMethods[method]})
 
-const replacer = (key, value) => {
+const replacer = (key: string, value: any) => {
   if (isBigInt(value)) value = value.toString()
   if (typeof value === 'function') value = value.toString()
   return value
 }
-console.logInternal = console.log
+(console as any).logInternal = console.log
 console.log = function () {
    window.remix.emit('log', {
      data: Array.from(arguments).map((el) => JSON.parse(JSON.stringify(el, replacer)))
    })
- }
+ };
 
-console.infoInternal = console.info
+(console as any).infoInternal = console.info;
 console.info = function () {
   window.remix.emit('info', {
     data: Array.from(arguments).map((el) => JSON.parse(JSON.stringify(el, replacer)))
   })
-}
+};
 
-console.warnInternal = console.warn
+(console as any).warnInternal = console.warn
 console.warn = function () {
   window.remix.emit('warn', {
     data: Array.from(arguments).map((el) => JSON.parse(JSON.stringify(el, replacer)))
   })
-}
+};
 
-console.errorInternal = console.error
+(console as any).errorInternal = console.error
 console.error = function () {
   window.remix.emit('error', {
     data: Array.from(arguments).map((el) => JSON.parse(JSON.stringify(el, replacer)))
