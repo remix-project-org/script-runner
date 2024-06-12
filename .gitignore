@@ -13,3 +13,4 @@ build/*
 
 # Re-include directories within build, to recurse into them
 !build/*/
+yarn-error.log

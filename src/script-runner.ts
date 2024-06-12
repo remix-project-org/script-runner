@@ -27,6 +27,8 @@ const ffjavascript = require('ffjavascript')
 import * as sindri from 'sindri'
 import { isBigInt } from 'web3-validator'
 import { TranspileOutput } from "typescript"
+import * as zksyncEthers from 'zksync-ethers'
+
 const chai = require('chai')
 chai.use(waffleChai);
 
@@ -68,6 +70,7 @@ window['@ethereumjs/util'] = ethereumjsUtil
 window["ffjavascript"] = ffjavascript
 
 window["sindri"] = sindri
+window["zksync-ethers"] = zksyncEthers
 
 const scriptReturns:  { [key: string]: any } = {} // keep track of modules exported values
 const fileContents: { [key: string]: any } = {} // keep track of file content
