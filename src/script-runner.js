@@ -48,19 +48,19 @@ const exportSolidityVerifier = snarkjs.zKey.exportSolidityVerifier
 const setup = snarkjs.plonk.setup
 
 snarkjs.zKey.newZKey = function (r1cs, ptau, zkey) {
-  _paq.push(['script-runner', 'snarkjs.zKey.newZKey'])
+  _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.newZKey'])
   return newZKey.call(this, r1cs, ptau, zkey)
 }
 snarkjs.zKey.exportVerificationKey = function(zkey) {
-  _paq.push(['script-runner', 'snarkjs.zKey.exportVerificationKey'])
+  _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportVerificationKey'])
   return exportVerificationKey.call(this, zkey)
 }
 snarkjs.zKey.exportSolidityVerifier = function(zkey, template) {
-  _paq.push(['script-runner', 'snarkjs.zKey.exportSolidityVerifier'])
+  _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportSolidityVerifier'])
   return exportSolidityVerifier.call(this, zkey, template)
 }
 snarkjs.plonk.setup = function(r1cs, ptau, zkey) {
-  _paq.push(['script-runner', 'snarkjs.plonk.setup'])
+  _paq.push(['trackEvent', 'script-runner', 'snarkjs.plonk.setup'])
   return setup.call(this, r1cs, ptau, zkey)
 }
 window['snarkjs'] = snarkjs
@@ -84,11 +84,11 @@ const createCircuit = sindri.SindriClient.prototype.createCircuit
 const proveCircuit = sindri.SindriClient.prototype.proveCircuit
 
 sindri.SindriClient.prototype.createCircuit = function (files, tags) {
-  _paq.push(['script-runner', 'sindri.SindriClient.createCircuit'])
+  _paq.push(['trackEvent', 'script-runner', 'sindri.SindriClient.createCircuit'])
   return createCircuit.call(this, files, tags)
 }
 sindri.SindriClient.prototype.proveCircuit = function (circuitId, proofInput) {
-  _paq.push(['script-runner', 'sindri.SindriClient.proveCircuit'])
+  _paq.push(['trackEvent', 'script-runner', 'sindri.SindriClient.proveCircuit'])
   return proveCircuit.call(this, circuitId, proofInput)
 }
 window["sindri"] = sindri
