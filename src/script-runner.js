@@ -29,14 +29,42 @@ import * as zksyncEthers from 'zksync-ethers'
 import { isBigInt } from 'web3-validator'
 
 const chai = require('chai')
-chai.use(waffleChai)
+const _paq = {
+  push: function (args) {
+    window.remix.call('matomo', 'track', args)
+  }
+}
 
+chai.use(waffleChai)
 window._starknet = starknet
 window.chai = chai
 window.ethers = ethersJs
 window.multihashes = multihash
 window['zokrates-js'] = zokratesJs
-window['snarkjs'] = snarkjs
+
+const snarkJs = Object.assign({}, snarkjs, {
+  zKey: {
+    ...snarkjs.zKey,
+    newZKey: function (r1cs, ptau, zkey) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.newZKey'])
+      return snarkjs.zKey.newZKey(r1cs, ptau, zkey)
+    },
+    exportVerificationKey: function(zkey) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportVerificationKey'])
+      return snarkjs.zKey.exportVerificationKey(zkey)
+    },
+    exportSolidityVerifier: function(zkey, template) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportSolidityVerifier'])
+      return snarkjs.zKey.exportSolidityVerifier(zkey, template)
+    },
+    setup: function(r1cs, ptau, zkey) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.plonk.setup'])
+      return snarkjs.plonk.setup(r1cs, ptau, zkey)
+    }
+  }
+})
+window['snarkjs'] = snarkJs
+
 window['circomlibjs'] = circomlibjs
 window['@zk-kit/incremental-merkle-tree'] = zkkitIncrementalMerkleTree
 
@@ -52,6 +80,17 @@ window['@ethereumjs/util'] = ethereumjsUtil
 
 window["ffjavascript"] = ffjavascript
 
+const createCircuit = sindri.default.createCircuit
+const proveCircuit = sindri.default.proveCircuit
+
+sindri.default.createCircuit = function (files, tags) {
+  _paq.push(['trackEvent', 'script-runner', 'sindri.SindriClient.createCircuit'])
+  return createCircuit.call(this, files, tags)
+}
+sindri.default.proveCircuit = function (circuitId, proofInput) {
+  _paq.push(['trackEvent', 'script-runner', 'sindri.SindriClient.proveCircuit'])
+  return proveCircuit.call(this, circuitId, proofInput)
+}
 window["sindri"] = sindri
 
 window["zksync-ethers"] = zksyncEthers
