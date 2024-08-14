@@ -42,28 +42,28 @@ window.ethers = ethersJs
 window.multihashes = multihash
 window['zokrates-js'] = zokratesJs
 
-const newZKey = snarkjs.zKey.newZKey
-const exportVerificationKey = snarkjs.zKey.exportVerificationKey
-const exportSolidityVerifier = snarkjs.zKey.exportSolidityVerifier
-const setup = snarkjs.plonk.setup
-
-snarkjs.zKey.newZKey = function (r1cs, ptau, zkey) {
-  _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.newZKey'])
-  return newZKey.call(this, r1cs, ptau, zkey)
-}
-snarkjs.zKey.exportVerificationKey = function(zkey) {
-  _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportVerificationKey'])
-  return exportVerificationKey.call(this, zkey)
-}
-snarkjs.zKey.exportSolidityVerifier = function(zkey, template) {
-  _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportSolidityVerifier'])
-  return exportSolidityVerifier.call(this, zkey, template)
-}
-snarkjs.plonk.setup = function(r1cs, ptau, zkey) {
-  _paq.push(['trackEvent', 'script-runner', 'snarkjs.plonk.setup'])
-  return setup.call(this, r1cs, ptau, zkey)
-}
-window['snarkjs'] = snarkjs
+const snarkJs = Object.assign({}, snarkjs, {
+  zKey: {
+    ...snarkjs.zKey,
+    newZKey: function (r1cs, ptau, zkey) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.newZKey'])
+      return snarkjs.zKey.newZKey(r1cs, ptau, zkey)
+    },
+    exportVerificationKey: function(zkey) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportVerificationKey'])
+      return snarkjs.zKey.exportVerificationKey(zkey)
+    },
+    exportSolidityVerifier: function(zkey, template) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.zKey.exportSolidityVerifier'])
+      return snarkjs.zKey.exportSolidityVerifier(zkey, template)
+    },
+    setup: function(r1cs, ptau, zkey) {
+      _paq.push(['trackEvent', 'script-runner', 'snarkjs.plonk.setup'])
+      return snarkjs.plonk.setup(r1cs, ptau, zkey)
+    }
+  }
+})
+window['snarkjs'] = snarkJs
 
 window['circomlibjs'] = circomlibjs
 window['@zk-kit/incremental-merkle-tree'] = zkkitIncrementalMerkleTree
@@ -80,14 +80,14 @@ window['@ethereumjs/util'] = ethereumjsUtil
 
 window["ffjavascript"] = ffjavascript
 
-const createCircuit = sindri.SindriClient.prototype.createCircuit
-const proveCircuit = sindri.SindriClient.prototype.proveCircuit
+const createCircuit = sindri.default.createCircuit
+const proveCircuit = sindri.default.proveCircuit
 
-sindri.SindriClient.prototype.createCircuit = function (files, tags) {
+sindri.default.createCircuit = function (files, tags) {
   _paq.push(['trackEvent', 'script-runner', 'sindri.SindriClient.createCircuit'])
   return createCircuit.call(this, files, tags)
 }
-sindri.SindriClient.prototype.proveCircuit = function (circuitId, proofInput) {
+sindri.default.proveCircuit = function (circuitId, proofInput) {
   _paq.push(['trackEvent', 'script-runner', 'sindri.SindriClient.proveCircuit'])
   return proveCircuit.call(this, circuitId, proofInput)
 }
